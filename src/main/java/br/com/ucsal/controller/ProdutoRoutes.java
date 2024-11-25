@@ -5,6 +5,7 @@ import java.util.List;
 
 import br.com.ucsal.annotation.Rota;
 import br.com.ucsal.model.Produto;
+import br.com.ucsal.persistencia.ContainerInjector;
 import br.com.ucsal.persistencia.HSQLProdutoRepository;
 import br.com.ucsal.service.ProdutoService;
 import jakarta.servlet.RequestDispatcher;
@@ -17,8 +18,15 @@ public class ProdutoRoutes {
     private final ProdutoService produtoService;
 
     public ProdutoRoutes() {
-        HSQLProdutoRepository repository = new HSQLProdutoRepository();
-        this.produtoService = new ProdutoService(repository);
+        ProdutoService service = new ProdutoService();
+        ContainerInjector.injetarDependencias(service);
+        this.produtoService = service; // Inicializa o campo de instância corretamente.
+        
+        if (this.produtoService != null) {
+            System.out.println("ProdutoService foi instanciado.");
+        } else {
+            System.out.println("Deu ruim.");
+        }
     }
     
     @Rota("/")
@@ -36,7 +44,6 @@ public class ProdutoRoutes {
             RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/views/produtoformulario.jsp");
             dispatcher.forward(req, resp);
         } else if ("POST".equalsIgnoreCase(method)) {
-        	System.out.println("Editando produto");
             Integer id = Integer.parseInt(req.getParameter("id"));
             String nome = req.getParameter("nome");
             double preco = Double.parseDouble(req.getParameter("preco"));
@@ -48,7 +55,6 @@ public class ProdutoRoutes {
 
     @Rota("/adicionarProduto")
     public void adicionarProduto(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    	System.out.println("Adicionando produto");
         String method = req.getMethod();
         if ("GET".equalsIgnoreCase(method)) {
             RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/views/produtoformulario.jsp");
@@ -63,7 +69,6 @@ public class ProdutoRoutes {
 
     @Rota("/excluirProduto")
     public void excluirProduto(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-    	System.out.println("Excluindo produto");
         Integer id = Integer.parseInt(req.getParameter("id"));
         produtoService.removerProduto(id);
         resp.sendRedirect("listarProdutos");
@@ -71,7 +76,6 @@ public class ProdutoRoutes {
 
     @Rota("/listarProdutos")
     public void listarProdutos(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    	System.out.println("Listando produto");
         List<Produto> produtos = produtoService.listarProdutos();
         req.setAttribute("produtos", produtos);
         RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/views/produtolista.jsp");

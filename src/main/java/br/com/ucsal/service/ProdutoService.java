@@ -2,14 +2,16 @@ package br.com.ucsal.service;
 
 import java.util.List;
 
+import br.com.ucsal.annotation.Inject;
 import br.com.ucsal.model.Produto;
 import br.com.ucsal.persistencia.ProdutoRepository;
 
 public class ProdutoService {
+	
+@Inject
  private ProdutoRepository<Produto, Integer> produtoRepository;
 
- public ProdutoService(ProdutoRepository<Produto, Integer> produtoRepository) {
-     this.produtoRepository = produtoRepository;
+ public ProdutoService() {
  }
 
  public void adicionarProduto(String nome, double preco) {
@@ -32,5 +34,6 @@ public class ProdutoService {
  public List<Produto> listarProdutos() {
      return produtoRepository.listar();
  }
+ 
 }
 

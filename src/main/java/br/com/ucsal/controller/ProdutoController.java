@@ -53,6 +53,7 @@ public class ProdutoController extends HttpServlet {
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String path = request.getPathInfo(); // Obtém o path da requisição
         Method method = rotaMap.get(path); // Busca o método associado
+        System.out.println("Metodo: "+ method);
 
         if (method != null) {
             try {
