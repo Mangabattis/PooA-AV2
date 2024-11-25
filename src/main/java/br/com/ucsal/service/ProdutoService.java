@@ -4,7 +4,9 @@ import java.util.List;
 
 import br.com.ucsal.annotation.Inject;
 import br.com.ucsal.model.Produto;
+import br.com.ucsal.persistencia.MemoriaProdutoRepository;
 import br.com.ucsal.persistencia.ProdutoRepository;
+import br.com.ucsal.persistencia.SingletonMemoria;
 
 public class ProdutoService {
 	
@@ -12,6 +14,7 @@ public class ProdutoService {
  private ProdutoRepository<Produto, Integer> produtoRepository;
 
  public ProdutoService() {
+	 this.produtoRepository = (ProdutoRepository<Produto, Integer>) SingletonMemoria.getSingleton(MemoriaProdutoRepository.class);
  }
 
  public void adicionarProduto(String nome, double preco) {

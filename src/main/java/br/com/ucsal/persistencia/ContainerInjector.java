@@ -16,7 +16,7 @@ public class ContainerInjector {
 	            if (campo.isAnnotationPresent((Class<? extends Annotation>) Inject.class)) {
 	                try {
 	                    Object repositorio = PersistenciaFactory.getProdutoRepository(TIPO_PERSISTENCIA);
-	                    campo.setAccessible(true);
+	                    campo.setAccessible(true); //Vai acessar o campo privado
 	                    campo.set(objeto, repositorio);
 	                    
 	                    if (repositorio instanceof HSQLProdutoRepository) {

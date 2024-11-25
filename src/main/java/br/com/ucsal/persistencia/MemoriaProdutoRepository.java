@@ -6,8 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import br.com.ucsal.annotation.Singleton;
 import br.com.ucsal.model.Produto;
 
+@Singleton
 public class MemoriaProdutoRepository implements ProdutoRepository<Produto, Integer>{
 
     private Map<Integer, Produto> produtos = new HashMap<>();

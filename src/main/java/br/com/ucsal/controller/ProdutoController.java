@@ -12,7 +12,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-// Define o servlet para capturar rotas relacionadas a "/produto/*"
 @WebServlet("/produto/*")
 public class ProdutoController extends HttpServlet {
 
@@ -22,7 +21,6 @@ public class ProdutoController extends HttpServlet {
     @Override
     public void init() throws ServletException {
         try {
-            // Registra as rotas dinamicamente
             registrarRotas();
         } catch (Exception e) {
             throw new ServletException("Erro ao inicializar rotas dinâmicas.", e);
@@ -30,7 +28,6 @@ public class ProdutoController extends HttpServlet {
     }
 
     private void registrarRotas() throws Exception {
-        // Lista as classes de controle para escanear (adicione mais conforme necessário)
         Class<?>[] controllerClasses = {
             ProdutoRoutes.class // Classe onde estão os métodos anotados com @Rota
         };
