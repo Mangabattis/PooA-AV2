@@ -6,6 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import br.com.ucsal.annotation.Rota;
+import br.com.ucsal.rotas.AdicionarProdutoRota;
+import br.com.ucsal.rotas.EditarProdutoRota;
+import br.com.ucsal.rotas.ExcluirProdutoRota;
+import br.com.ucsal.rotas.ListarProdutosRota;
+import br.com.ucsal.rotas.NewRotaDetalhesProduto;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -26,13 +31,17 @@ public class ProdutoController extends HttpServlet {
             throw new ServletException("Erro ao inicializar rotas dinâmicas.", e);
         }
     }
-
+    
+    //novo
     private void registrarRotas() throws Exception {
         Class<?>[] controllerClasses = {
-            ProdutoRoutes.class // Classe onde estão os métodos anotados com @Rota
+            AdicionarProdutoRota.class,
+            EditarProdutoRota.class,
+            ExcluirProdutoRota.class,
+            ListarProdutosRota.class,
+            NewRotaDetalhesProduto.class // Nova rota adicionada
         };
 
-        // Escaneia métodos anotados com @Rota
         for (Class<?> controllerClass : controllerClasses) {
             Object controllerInstance = controllerClass.getDeclaredConstructor().newInstance();
             controllers.put(controllerClass, controllerInstance);
@@ -45,6 +54,31 @@ public class ProdutoController extends HttpServlet {
             }
         }
     }
+
+    
+    
+    //novo
+
+  //Antes de modificar
+//    private void registrarRotas() throws Exception {
+//        Class<?>[] controllerClasses = {
+//            ProdutoRoutes.class // Classe onde estão os métodos anotados com @Rota
+//        };
+//
+//        // Escaneia métodos anotados com @Rota
+//        for (Class<?> controllerClass : controllerClasses) {
+//            Object controllerInstance = controllerClass.getDeclaredConstructor().newInstance();
+//            controllers.put(controllerClass, controllerInstance);
+//
+//            for (Method method : controllerClass.getDeclaredMethods()) {
+//                if (method.isAnnotationPresent(Rota.class)) {
+//                    Rota rota = method.getAnnotation(Rota.class);
+//                    rotaMap.put(rota.value(), method);
+//                }
+//            }
+//        }
+//    }
+    //Antes de modificar
 
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
