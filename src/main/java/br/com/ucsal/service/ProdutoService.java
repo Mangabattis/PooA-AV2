@@ -11,9 +11,6 @@ public class ProdutoService {
 @Inject
  private ProdutoRepository<Produto, Integer> produtoRepository;
 
- public ProdutoService() {
- }
-
  public void adicionarProduto(String nome, double preco) {
      Produto produto = new Produto(null, nome, preco);
      produtoRepository.adicionar(produto);

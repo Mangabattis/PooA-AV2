@@ -6,7 +6,7 @@ import br.com.ucsal.annotation.Inject;
 
 public class ContainerInjector {
 	
-	 private static final int TIPO_PERSISTENCIA = PersistenciaFactory.MEMORIA; // pode mudar para memória tbm (PersistenciaFactory.MEMORIA)
+	 private static final int TIPO_PERSISTENCIA = PersistenciaFactory.HSQL; // pode mudar para memória tbm (PersistenciaFactory.MEMORIA)
 
 	    public static void injetarDependencias(Object objeto) {
 	        Field[] campos = objeto.getClass().getDeclaredFields();

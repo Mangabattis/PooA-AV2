@@ -2,18 +2,18 @@ package br.com.ucsal.scanner;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.net.URL;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import br.com.ucsal.annotation.Rota;
 
 public class RotasScanner {
 
-    public static List<Method> scanRoutes(String packageName) throws ClassNotFoundException, IOException {
-        List<Method> routeMethods = new ArrayList<>();
+    public static Map<String, Method> scanAndRegisterRoutes(String packageName, Map<Class<?>, Object> controllers) throws ClassNotFoundException, IOException {
+        Map<String, Method> rotaMap = new HashMap<>();
 
         // Obter o diretório do pacote
         String path = packageName.replace('.', '/');
@@ -38,13 +38,25 @@ public class RotasScanner {
                 // Procurar métodos anotados com @Rota
                 for (Method method : clazz.getDeclaredMethods()) {
                     if (method.isAnnotationPresent(Rota.class)) {
-                        routeMethods.add(method);
+                        Rota rota = method.getAnnotation(Rota.class);
+                        // Criar a instância do controlador se não existir
+                        if (!controllers.containsKey(clazz)) {
+                            try {
+                                Object controllerInstance = clazz.getDeclaredConstructor().newInstance();
+                                controllers.put(clazz, controllerInstance);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                throw new RuntimeException("Erro ao instanciar controlador: " + clazz.getName());
+                            }
+                        }
+
+                        // Registra o método e a rota
+                        rotaMap.put(rota.value(), method);
                     }
                 }
             }
         }
 
-        return routeMethods;
+        return rotaMap;
     }
 }
-

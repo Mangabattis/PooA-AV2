@@ -9,7 +9,7 @@ public class PersistenciaFactory {
 		ProdutoRepository<?, ?> produtoRepository;
 		switch (type) {
 		case 0: {
-			produtoRepository = MemoriaProdutoRepository.getInstancia();
+			produtoRepository = SingletonMemoria.getInstance(MemoriaProdutoRepository.class);
 			break;
 		}
 		case 1: {

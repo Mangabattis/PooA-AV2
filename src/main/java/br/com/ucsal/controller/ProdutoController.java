@@ -3,10 +3,8 @@ package br.com.ucsal.controller;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import br.com.ucsal.annotation.Rota;
 import br.com.ucsal.scanner.RotasScanner;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -35,28 +33,11 @@ public class ProdutoController extends HttpServlet {
     private void registrarRotas() throws Exception {
         String packageName = "br.com.ucsal.rotas"; // Pacote onde as rotas estão localizadas
 
-        try {
-            // Busca todas as classes no pacote manualmente
-            List<Method> methods = RotasScanner.scanRoutes(packageName);
-            
-            for (Method method : methods) {
-                Rota rota = method.getAnnotation(Rota.class);
-                Class<?> declaringClass = method.getDeclaringClass();
-                
-                // Cria a instância do controlador se ainda não existir
-                if (!controllers.containsKey(declaringClass)) {
-                    Object controllerInstance = declaringClass.getDeclaredConstructor().newInstance();
-                    controllers.put(declaringClass, controllerInstance);
-                }
+        // Delegando a responsabilidade de buscar e registrar rotas para a classe RotasScanner
+        Map<String, Method> routes = RotasScanner.scanAndRegisterRoutes(packageName, controllers);
 
-                // Registra o método e a rota
-                rotaMap.put(rota.value(), method);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
+        // Adiciona as rotas no mapa de rotas
+        rotaMap.putAll(routes);
     }
 
     @Override

@@ -9,20 +9,25 @@ import java.util.concurrent.atomic.AtomicInteger;
 import br.com.ucsal.annotation.Singleton;
 import br.com.ucsal.model.Produto;
 
-//@Singleton
+@Singleton
 public class MemoriaProdutoRepository implements ProdutoRepository<Produto, Integer>{
 
     private Map<Integer, Produto> produtos = new HashMap<>();
     private AtomicInteger currentId = new AtomicInteger(1);
-
-    private static MemoriaProdutoRepository instancia;
     
-    public static synchronized MemoriaProdutoRepository getInstancia() { //Essa bosta vai sair dps, isso aqui vai ser invocado automaticamente quando colocar o @inject
-    	if(instancia == null) {
-    		instancia = new MemoriaProdutoRepository();
-    	}
-    	return instancia;
-	}
+    
+    private MemoriaProdutoRepository() {
+    }
+
+
+//    private static MemoriaProdutoRepository instancia;
+//    
+//    public static synchronized MemoriaProdutoRepository getInstancia() { //Essa bosta vai sair dps, isso aqui vai ser invocado automaticamente quando colocar o @inject
+//    	if(instancia == null) {
+//    		instancia = new MemoriaProdutoRepository();
+//    	}
+//    	return instancia;
+//	}
     
     
     @Override
