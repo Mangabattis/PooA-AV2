@@ -18,14 +18,11 @@ public class SingletonScanner {
         List<Class<?>> classes = findClassesInPackage(packageName);
 
         for (Class<?> clazz : classes) {
-            // Verificar se a classe está anotada com @Singleton
             if (clazz.isAnnotationPresent(Singleton.class)) {
                 try {
-                    // Verificar se a classe tem um construtor padrão
                     Constructor<?> constructor = clazz.getDeclaredConstructor();
                     constructor.setAccessible(true);
 
-                    // Criar instância e registrar no SingletonManager
                     Object instance = constructor.newInstance();
                     SingletonMemoria.registerInstance(clazz, instance);
                 } catch (Exception e) {
@@ -38,24 +35,20 @@ public class SingletonScanner {
     private static List<Class<?>> findClassesInPackage(String packageName) throws ClassNotFoundException, IOException {
         List<Class<?>> classes = new ArrayList<>();
 
-        // Caminho do pacote
-        String path = packageName.replace('.', '/');
+        String path = packageName.replace('.', '/'); //Vai substituir para que a procura seja por diretório
         URL resource = Thread.currentThread().getContextClassLoader().getResource(path);
 
         if (resource == null) {
             throw new ClassNotFoundException("Pacote não encontrado: " + packageName);
         }
 
-        // Obter o diretório
         File directory = new File(resource.getFile());
         if (!directory.exists()) {
             throw new ClassNotFoundException("Diretório do pacote não encontrado: " + packageName);
         }
 
-        // Iterar pelos arquivos do diretório
         for (File file : directory.listFiles()) {
             if (file.getName().endsWith(".class")) {
-                // Obter o nome completo da classe
                 String className = packageName + '.' + file.getName().replace(".class", "");
                 classes.add(Class.forName(className));
             }

@@ -22,7 +22,7 @@ public class MemoriaProdutoRepository implements ProdutoRepository<Produto, Inte
 
 //    private static MemoriaProdutoRepository instancia;
 //    
-//    public static synchronized MemoriaProdutoRepository getInstancia() { //Essa bosta vai sair dps, isso aqui vai ser invocado automaticamente quando colocar o @inject
+//    public static synchronized MemoriaProdutoRepository getInstancia() {
 //    	if(instancia == null) {
 //    		instancia = new MemoriaProdutoRepository();
 //    	}

@@ -15,7 +15,6 @@ public class RotasScanner {
     public static Map<String, Method> scanAndRegisterRoutes(String packageName, Map<Class<?>, Object> controllers) throws ClassNotFoundException, IOException {
         Map<String, Method> rotaMap = new HashMap<>();
 
-        // Obter o diretório do pacote
         String path = packageName.replace('.', '/');
         URL resource = Thread.currentThread().getContextClassLoader().getResource(path);
         if (resource == null) {
@@ -28,10 +27,8 @@ public class RotasScanner {
             throw new ClassNotFoundException("Diretório do pacote não existe: " + packageName);
         }
 
-        // Iterar por todos os arquivos .class no diretório
         for (File file : directory.listFiles()) {
             if (file.getName().endsWith(".class")) {
-                // Nome da classe completa
                 String className = packageName + '.' + file.getName().replace(".class", "");
                 Class<?> clazz = Class.forName(className);
 

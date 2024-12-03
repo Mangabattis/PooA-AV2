@@ -26,17 +26,12 @@ public class ProdutoController extends HttpServlet {
             throw new ServletException("Erro ao inicializar rotas dinâmicas.", e);
         }
     }
-
-    /**
-     * Registra as rotas dinamicamente, buscando métodos anotados com @Rota no pacote especificado.
-     */
+    
     private void registrarRotas() throws Exception {
-        String packageName = "br.com.ucsal.rotas"; // Pacote onde as rotas estão localizadas
+        String packageName = "br.com.ucsal.rotas";
 
-        // Delegando a responsabilidade de buscar e registrar rotas para a classe RotasScanner
         Map<String, Method> routes = RotasScanner.scanAndRegisterRoutes(packageName, controllers);
 
-        // Adiciona as rotas no mapa de rotas
         rotaMap.putAll(routes);
     }
 
